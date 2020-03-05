@@ -7,20 +7,22 @@ import kotlin.concurrent.thread
 private const val RANDOM_STRING_START_ASCII = 97
 private const val RANDOM_STRING_END_ASCII = 122
 private const val RANDOM_RANGE_LENGTH = (RANDOM_STRING_END_ASCII - RANDOM_STRING_START_ASCII + 1)
-private const val RANDOM_STRING_LENGTH = 6
+private const val RANDOM_STRING_LENGTH = 8
 
 val randomString: String
-    get() {
-        val builder = StringBuilder(RANDOM_STRING_LENGTH)
-        val random = Random()
+    get() = randomString()
 
-        for (i in 0 until RANDOM_STRING_LENGTH) {
-            val randomLimitedInt = (RANDOM_STRING_START_ASCII + (random.nextInt() * RANDOM_RANGE_LENGTH))
-            builder.append(randomLimitedInt.toChar())
-        }
+fun randomString(length: Int = RANDOM_STRING_LENGTH): String {
+    val builder = StringBuilder(length)
+    val random = Random()
 
-        return builder.toString()
+    for (i in 0 until length) {
+        val randomLimitedInt = (RANDOM_STRING_START_ASCII + (random.nextInt() % RANDOM_RANGE_LENGTH))
+        builder.append(randomLimitedInt.toChar())
     }
+
+    return builder.toString()
+}
 
 fun shutdownHook(block: () -> Unit) {
     Runtime.getRuntime().addShutdownHook(thread(start = false, block = block))
