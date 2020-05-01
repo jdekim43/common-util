@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Date
 
 plugins {
-    kotlin("jvm") version "1.3.70"
+    kotlin("multiplatform") version "1.3.72"
     `maven-publish`
     id("com.jfrog.bintray") version "1.8.4"
 }
@@ -18,29 +18,34 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-}
-
-tasks.withType<KotlinCompile> {
-    val jvmTarget: String by project
-
-    kotlinOptions.jvmTarget = jvmTarget
-}
-
-val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.getByName("main").allSource)
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("lib") {
-            groupId = artifactGroup
+kotlin {
+    metadata {
+        mavenPublication {
+            artifactId = "$artifactName-common"
+        }
+    }
+    jvm {
+        mavenPublication {
             artifactId = artifactName
-            version = artifactVersion
-            from(components["java"])
-            artifact(sourcesJar)
+        }
+    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-common"))
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(kotlin("stdlib-jdk8"))
+            }
+
+            tasks.withType<KotlinCompile> {
+                val jvmTarget: String by project
+
+                kotlinOptions.jvmTarget = jvmTarget
+            }
         }
     }
 }
@@ -51,7 +56,7 @@ bintray {
 
     publish = true
 
-    setPublications("lib")
+    setPublications("jvm", "metadata")
 
     pkg.apply {
         repo = "maven"
