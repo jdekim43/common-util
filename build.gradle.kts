@@ -9,7 +9,7 @@ plugins {
 
 val artifactName = "common-util"
 val artifactGroup = "kr.jadekim"
-val artifactVersion = "1.1.0"
+val artifactVersion = "1.1.1"
 group = artifactGroup
 version = artifactVersion
 
@@ -60,7 +60,7 @@ bintray {
 
     pkg.apply {
         repo = "maven"
-        name = rootProject.name
+        name = "common-util"
         setLicenses("MIT")
         setLabels("kotlin")
         vcsUrl = "https://github.com/jdekim43/common-util.git"
