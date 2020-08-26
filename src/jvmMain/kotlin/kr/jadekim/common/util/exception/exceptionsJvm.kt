@@ -1,6 +1,7 @@
 package kr.jadekim.common.util.exception
 
 import java.io.File
+import java.io.InputStreamReader
 import java.util.*
 
 //private const val defaultMessageResourcesPath = "kr.jadekim.common.util.exception.message"
@@ -26,16 +27,17 @@ fun loadErrorMessage(directory: File) {
 
 fun loadErrorMessage(language: Language, file: File) {
     file.inputStream()
-            .use { Properties().apply { load(it) } }
+            .use { Properties().apply { load(InputStreamReader(it)) } }
             .let { Pair(language, it) }
             .loadMessagesTo(messageMap)
 }
 
 private fun File.readMessageResources() = listFiles { file -> file.extension == "properties" }
         ?.map {
-            it.name.toLanguage() to it.inputStream().use { Properties().apply { load(it) } }
+            it.name.toLanguage() to it.inputStream().use {
+                Properties().apply { load(InputStreamReader(it)) }
+            }
         }
-        ?.map { it.first to it.second }
         ?: emptyList()
 
 private fun String.toLanguage(): Language = substringBefore(".", "")
