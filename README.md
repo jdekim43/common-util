@@ -26,7 +26,7 @@
     ```
     build.gradle.kts
    
-    implementation("kr.jadekim:common-util:1.0.0")
+    implementation("kr.jadekim:common-util:$commonUtilVersion")
     ```
 
 ## How to use
