@@ -1,6 +1,7 @@
 package kr.jadekim.common.util.exception
 
 import java.io.File
+import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.*
 
@@ -28,8 +29,15 @@ fun loadErrorMessage(directory: File) {
 fun loadErrorMessage(language: Language, file: File) {
     file.inputStream()
             .use { Properties().apply { load(InputStreamReader(it)) } }
-            .let { Pair(language, it) }
-            .loadMessagesTo(messageMap)
+            .let { loadErrorMessage(language, it) }
+}
+
+fun loadErrorMessage(language: Language, inputStream: InputStream) {
+    loadErrorMessage(language, inputStream.use { Properties().apply { load(InputStreamReader(it)) } })
+}
+
+fun loadErrorMessage(language: Language, properties: Properties) {
+    Pair(language, properties).loadMessagesTo(messageMap)
 }
 
 private fun File.readMessageResources() = listFiles { file -> file.extension == "properties" }

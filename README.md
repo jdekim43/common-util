@@ -17,6 +17,9 @@
     * shutdownHook
     * ...
 
+## Support
+* JVM
+
 ## Install
 ### Gradle Project
 1. Add dependency

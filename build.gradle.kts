@@ -2,14 +2,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Date
 
 plugins {
-    kotlin("multiplatform") version "1.3.72"
+    kotlin("multiplatform") version "1.4.10"
     `maven-publish`
     id("com.jfrog.bintray") version "1.8.4"
 }
 
 val artifactName = "common-util"
 val artifactGroup = "kr.jadekim"
-val artifactVersion = "1.1.4"
+val artifactVersion = "1.1.6"
 group = artifactGroup
 version = artifactVersion
 
@@ -31,16 +31,8 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-            }
-        }
+        val commonMain by getting {}
         val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-            }
-
             tasks.withType<KotlinCompile> {
                 val jvmTarget: String by project
 
