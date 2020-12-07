@@ -19,42 +19,42 @@ interface TraceLogger {
 }
 
 data class Transaction(
-        val name: String,
-        val id: String = generateUUID(),
-        val segments: MutableList<Segment> = mutableListOf()
+    val name: String,
+    val id: String = generateUUID(),
+    val segments: MutableList<Segment> = mutableListOf()
 )
 
 data class Segment(
-        val name: String,
-        val startTime: Long,
-        val endTime: Long,
-        val executeTime: Long = endTime - startTime
+    val name: String,
+    val startTime: Long,
+    val endTime: Long,
+    val executeTime: Long = endTime - startTime
 )
 
 data class TransactionLog(
-        val segmentName: String,
-        val segmentStartTime: Long,
-        val segmentEndTime: Long,
-        val executeTime: Long = segmentEndTime - segmentStartTime,
-        val transactionId: String? = null,
-        val transactionName: String? = null
+    val segmentName: String,
+    val segmentStartTime: Long,
+    val segmentEndTime: Long,
+    val executeTime: Long = segmentEndTime - segmentStartTime,
+    val transactionId: String? = null,
+    val transactionName: String? = null
 ) {
     fun print() = traceLogger.log(this)
 }
 
 data class TransactionContext(
-        val name: String,
-        val transaction: Transaction = Transaction(name)
+    val name: String,
+    val transaction: Transaction = Transaction(name)
 ) : AbstractCoroutineContextElement(Key) {
 
     companion object Key : CoroutineContext.Key<TransactionContext>
 }
 
 fun <T> trace(
-        segmentName: String,
-        transactionId: String? = null,
-        transactionName: String? = null,
-        body: () -> T
+    segmentName: String,
+    transactionId: String? = null,
+    transactionName: String? = null,
+    body: () -> T
 ): T {
     val startTime = currentTimeMillis
 
@@ -63,16 +63,22 @@ fun <T> trace(
     } finally {
         val endTime = currentTimeMillis
 
-        TransactionLog(segmentName, startTime, endTime, transactionId = transactionId, transactionName = transactionName)
-                .print()
+        TransactionLog(
+            segmentName,
+            startTime,
+            endTime,
+            transactionId = transactionId,
+            transactionName = transactionName
+        )
+            .print()
     }
 }
 
 suspend fun <T> trace(
-        segmentName: String,
-        transactionId: String? = null,
-        transactionName: String? = null,
-        body: suspend () -> T
+    segmentName: String,
+    transactionId: String? = null,
+    transactionName: String? = null,
+    body: suspend () -> T
 ): T {
     val transaction = coroutineContext[TransactionContext]?.transaction
     val _transactionId = transactionId ?: transaction?.id
@@ -89,7 +95,13 @@ suspend fun <T> trace(
             add(Segment(segmentName, startTime, endTime))
         }
 
-        TransactionLog(segmentName, startTime, endTime, transactionId = _transactionId, transactionName = _transactionName)
-                .print()
+        TransactionLog(
+            segmentName,
+            startTime,
+            endTime,
+            transactionId = _transactionId,
+            transactionName = _transactionName
+        )
+            .print()
     }
 }

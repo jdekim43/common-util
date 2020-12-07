@@ -23,10 +23,10 @@ fun <T : Comparable<T>> min(a: T, b: T) = if (a < b) a else b
 fun <T : Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
 fun Int.toByteArray() = byteArrayOf(
-        (this and 0xFF).toByte(),
-        ((this ushr 8) and 0xFF).toByte(),
-        ((this ushr 16) and 0xFF).toByte(),
-        ((this ushr 24) and 0xFF).toByte()
+    (this and 0xFF).toByte(),
+    ((this ushr 8) and 0xFF).toByte(),
+    ((this ushr 16) and 0xFF).toByte(),
+    ((this ushr 24) and 0xFF).toByte()
 )
 
 fun ByteArray.toInt(): Int {
@@ -40,14 +40,14 @@ fun ByteArray.toInt(): Int {
 }
 
 fun Long.toByteArray() = byteArrayOf(
-        (this and 0xFF).toByte(),
-        ((this ushr 8) and 0xFF).toByte(),
-        ((this ushr 16) and 0xFF).toByte(),
-        ((this ushr 24) and 0xFF).toByte(),
-        ((this ushr 32) and 0xFF).toByte(),
-        ((this ushr 40) and 0xFF).toByte(),
-        ((this ushr 48) and 0xFF).toByte(),
-        ((this ushr 56) and 0xFF).toByte()
+    (this and 0xFF).toByte(),
+    ((this ushr 8) and 0xFF).toByte(),
+    ((this ushr 16) and 0xFF).toByte(),
+    ((this ushr 24) and 0xFF).toByte(),
+    ((this ushr 32) and 0xFF).toByte(),
+    ((this ushr 40) and 0xFF).toByte(),
+    ((this ushr 48) and 0xFF).toByte(),
+    ((this ushr 56) and 0xFF).toByte()
 )
 
 fun ByteArray.toLong(): Long {

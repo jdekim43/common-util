@@ -1,6 +1,6 @@
 package kr.jadekim.common.util.ext
 
-import java.util.*
+import java.util.Properties
 
 fun Properties.getInt(key: String): Int? {
     return getProperty(key)?.toInt()

@@ -2,7 +2,8 @@ package kr.jadekim.common.util
 
 import java.io.File
 import java.io.InputStream
-import java.util.*
+import java.util.Properties
+import java.util.UUID
 import kotlin.concurrent.thread
 
 actual fun generateUUID(): String = UUID.randomUUID().toString()
@@ -16,9 +17,9 @@ fun shutdownHook(block: () -> Unit) {
 
 fun loadPropertiesFile(propertyFiles: List<File>, properties: Properties = Properties()): Properties {
     return propertyFiles
-            .filter { it.canRead() }
-            .map { it.inputStream() }
-            .let { loadProperties(it, properties) }
+        .filter { it.canRead() }
+        .map { it.inputStream() }
+        .let { loadProperties(it, properties) }
 }
 
 fun loadProperties(sources: List<InputStream>, properties: Properties = Properties()): Properties {

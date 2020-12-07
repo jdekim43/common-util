@@ -78,6 +78,6 @@ object Base64 : Encoder {
     }
 
     private fun Byte.asU8() = toInt() and 0xFF
-    private fun ByteArray.readU24BE(index: Int): Int
-            = (this[index + 0].asU8() shl 16) or (this[index + 1].asU8() shl 8) or (this[index + 2].asU8() shl 0)
+    private fun ByteArray.readU24BE(index: Int): Int =
+        (this[index + 0].asU8() shl 16) or (this[index + 1].asU8() shl 8) or (this[index + 2].asU8() shl 0)
 }

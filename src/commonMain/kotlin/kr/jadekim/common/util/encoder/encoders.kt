@@ -3,7 +3,6 @@ package kr.jadekim.common.util.encoder
 import kr.jadekim.common.util.encoder.pure.Hex
 import kr.jadekim.common.util.ext.asString
 import kr.jadekim.common.util.ext.bytes
-import kr.jadekim.common.util.ext.chars
 
 interface Encoder {
 

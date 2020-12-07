@@ -24,9 +24,9 @@ fun MessageMap.getErrorMessage(errorCode: String, language: Language = defaultLa
     }
 
     return localeMap[language]
-            ?: localeMap[defaultLanguage]
-            ?: localeMap.values.firstOrNull()
-            ?: "기타오류가 발생했습니다."
+        ?: localeMap[defaultLanguage]
+        ?: localeMap.values.firstOrNull()
+        ?: "기타오류가 발생했습니다."
 }
 
 enum class ExceptionLevel {
@@ -36,40 +36,41 @@ enum class ExceptionLevel {
 }
 
 open class FriendlyException(
-        val code: String,
-        val data: Any? = null,
-        cause: Throwable? = null,
-        message: String? = cause?.message,
-        val level: ExceptionLevel = ExceptionLevel.WARNING
+    val code: String,
+    val data: Any? = null,
+    cause: Throwable? = null,
+    message: String? = cause?.message,
+    val level: ExceptionLevel = ExceptionLevel.WARNING
 ) : RuntimeException("$code : $message", cause) {
 
-    open fun getFriendlyMessage(language: Language? = defaultLanguage) = messageMap.getErrorMessage(code, language ?: defaultLanguage)
+    open fun getFriendlyMessage(language: Language? = defaultLanguage) =
+        messageMap.getErrorMessage(code, language ?: defaultLanguage)
 }
 
 class UnknownException(
-        cause: Throwable,
-        message: String? = null
+    cause: Throwable,
+    message: String? = null
 ) : FriendlyException(
-        code = "COM-1",
-        cause = cause,
-        message = message ?: cause.message ?: "Unknown Exception",
-        level = ExceptionLevel.ERROR
+    code = "COM-1",
+    cause = cause,
+    message = message ?: cause.message ?: "Unknown Exception",
+    level = ExceptionLevel.ERROR
 )
 
 class ProgrammingException(
-        message: String,
-        cause: Throwable? = null
+    message: String,
+    cause: Throwable? = null
 ) : FriendlyException(
-        code = "COM-2",
-        message = message,
-        cause = cause,
-        level = ExceptionLevel.ERROR
+    code = "COM-2",
+    message = message,
+    cause = cause,
+    level = ExceptionLevel.ERROR
 )
 
 class AssertException(
-        message: String
+    message: String
 ) : FriendlyException(
-        code = "COM-3",
-        message = message,
-        level = ExceptionLevel.ERROR
+    code = "COM-3",
+    message = message,
+    level = ExceptionLevel.ERROR
 )
