@@ -14,7 +14,8 @@
 * Extension Functions
 * Util Functions
     * Generate random string
-    * shutdownHook
+    * shutdownHook (Only JVM)
+    * parallel (coroutine async)
     * ...
 
 ## Support
@@ -26,7 +27,13 @@
     ```
     build.gradle.kts
    
-    implementation("kr.jadekim:common-util:$commonUtilVersion")
+    repositories {
+      maven("https://jadekim.jfrog.io/artifactory/maven")
+    }
+   
+    dependencies {
+      implementation("kr.jadekim:common-util:$commonUtilVersion")
+    }
     ```
 
 ## How to use
@@ -133,7 +140,7 @@ or
 val length = 12
 val str = randomString(length)
 ```
-#### Shutdown Hook
+#### Shutdown Hook (Only JVM)
 ```
 shutdownHook {
     ...

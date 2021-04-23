@@ -1,15 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.util.Date
 
 plugins {
-    kotlin("multiplatform") version "1.4.10"
-    `maven-publish`
-    id("com.jfrog.bintray") version "1.8.4"
+    kotlin("multiplatform") version "1.4.32"
+    id("maven-publish")
 }
 
 val artifactName = "common-util"
 val artifactGroup = "kr.jadekim"
-val artifactVersion = "1.1.7"
+val artifactVersion = "1.1.13"
 group = artifactGroup
 version = artifactVersion
 
@@ -24,41 +22,53 @@ kotlin {
             artifactId = "$artifactName-common"
         }
     }
+
     jvm {
         mavenPublication {
-            artifactId = artifactName
+            artifactId = "$artifactName-jvm"
         }
     }
 
     sourceSets {
-        val commonMain by getting {}
+        val commonMain by getting {
+            dependencies {
+                val kotlinxVersion: String by project
+
+                compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxVersion")
+            }
+        }
         val jvmMain by getting {
+            dependencies {
+                val kotlinxVersion: String by project
+
+                compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxVersion")
+            }
+
             tasks.withType<KotlinCompile> {
                 val jvmTarget: String by project
 
                 kotlinOptions.jvmTarget = jvmTarget
             }
         }
+
+        all {
+            languageSettings.useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
+        }
     }
-}
 
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
+    publishing {
+        repositories {
+            maven {
+                val jfrogUsername: String by project
+                val jfrogPassword: String by project
 
-    publish = true
+                setUrl("https://jadekim.jfrog.io/artifactory/maven/")
 
-    setPublications("jvm", "metadata")
-
-    pkg.apply {
-        repo = "maven"
-        name = "common-util"
-        setLicenses("MIT")
-        setLabels("kotlin")
-        vcsUrl = "https://github.com/jdekim43/common-util.git"
-        version.apply {
-            name = artifactVersion
-            released = Date().toString()
+                credentials {
+                    username = jfrogUsername
+                    password = jfrogPassword
+                }
+            }
         }
     }
 }

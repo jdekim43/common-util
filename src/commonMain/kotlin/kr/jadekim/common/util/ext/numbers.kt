@@ -22,6 +22,7 @@ fun <T : Comparable<T>> min(a: T, b: T) = if (a < b) a else b
 
 fun <T : Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
+@Deprecated("Use littleEndian", ReplaceWith("littleEndian"))
 fun Int.toByteArray() = byteArrayOf(
     (this and 0xFF).toByte(),
     ((this ushr 8) and 0xFF).toByte(),
@@ -29,6 +30,23 @@ fun Int.toByteArray() = byteArrayOf(
     ((this ushr 24) and 0xFF).toByte()
 )
 
+val Int.bigEndian: ByteArray
+    get() = byteArrayOf(
+        ((this shr 24) and 0xFF).toByte(),
+        ((this shr 16) and 0xFF).toByte(),
+        ((this shr 8) and 0xFF).toByte(),
+        (this and 0xFF).toByte()
+    )
+
+val Int.littleEndian: ByteArray
+    get() = byteArrayOf(
+        (this and 0xFF).toByte(),
+        ((this shr 8) and 0xFF).toByte(),
+        ((this shr 16) and 0xFF).toByte(),
+        ((this shr 24) and 0xFF).toByte()
+    )
+
+@Deprecated("Use littleEndianToInt", ReplaceWith("littleEndianToInt"))
 fun ByteArray.toInt(): Int {
     var result = 0
 
@@ -39,6 +57,27 @@ fun ByteArray.toInt(): Int {
     return result
 }
 
+fun ByteArray.bigEndianToInt(): Int {
+    var result = 0
+
+    for (i in indices) {
+        result = result or ((this[i].toInt() and 0xFF) shl (24 - 8 * i))
+    }
+
+    return result
+}
+
+fun ByteArray.littleEndianToInt(): Int {
+    var result = 0
+
+    for (i in indices) {
+        result = result or ((this[i].toInt() and 0xFF) shl 8 * i)
+    }
+
+    return result
+}
+
+@Deprecated("Use littleEndian", ReplaceWith("littleEndian"))
 fun Long.toByteArray() = byteArrayOf(
     (this and 0xFF).toByte(),
     ((this ushr 8) and 0xFF).toByte(),
@@ -50,7 +89,52 @@ fun Long.toByteArray() = byteArrayOf(
     ((this ushr 56) and 0xFF).toByte()
 )
 
+val Long.bigEndian: ByteArray
+    get() = byteArrayOf(
+        ((this shr 56) and 0xFF).toByte(),
+        ((this shr 48) and 0xFF).toByte(),
+        ((this shr 40) and 0xFF).toByte(),
+        ((this shr 32) and 0xFF).toByte(),
+        ((this shr 24) and 0xFF).toByte(),
+        ((this shr 16) and 0xFF).toByte(),
+        ((this shr 8) and 0xFF).toByte(),
+        (this and 0xFF).toByte()
+    )
+
+val Long.littleEndian: ByteArray
+    get() = byteArrayOf(
+        (this and 0xFF).toByte(),
+        ((this shr 8) and 0xFF).toByte(),
+        ((this shr 16) and 0xFF).toByte(),
+        ((this shr 24) and 0xFF).toByte(),
+        ((this shr 32) and 0xFF).toByte(),
+        ((this shr 40) and 0xFF).toByte(),
+        ((this shr 48) and 0xFF).toByte(),
+        ((this shr 56) and 0xFF).toByte()
+    )
+
+@Deprecated("Use littleEndianToLong", ReplaceWith("littleEndianToLong"))
 fun ByteArray.toLong(): Long {
+    var result = 0L
+
+    for (i in indices) {
+        result = result or ((this[i].toInt() and 0xFF) shl 8 * i).toLong()
+    }
+
+    return result
+}
+
+fun ByteArray.bigEndianToLong(): Long {
+    var result = 0L
+
+    for (i in indices) {
+        result = result or ((this[i].toInt() and 0xFF) shl (56 - 8 * i)).toLong()
+    }
+
+    return result
+}
+
+fun ByteArray.littleEndianToLong(): Long {
     var result = 0L
 
     for (i in indices) {
