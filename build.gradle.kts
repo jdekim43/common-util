@@ -7,7 +7,7 @@ plugins {
 
 val artifactName = "common-util"
 val artifactGroup = "kr.jadekim"
-val artifactVersion = "1.1.13"
+val artifactVersion = "1.1.14"
 group = artifactGroup
 version = artifactVersion
 
