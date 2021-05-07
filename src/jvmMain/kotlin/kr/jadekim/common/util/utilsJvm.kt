@@ -11,6 +11,8 @@ actual fun generateUUID(): String = UUID.randomUUID().toString()
 actual val currentTimeMillis: Long
     get() = System.currentTimeMillis()
 
+actual fun currentTimeMillis(): Long = System.currentTimeMillis()
+
 fun shutdownHook(block: () -> Unit) {
     Runtime.getRuntime().addShutdownHook(thread(start = false, block = block))
 }

@@ -60,3 +60,15 @@ fun String.putQueryParameter(key: String, value: String): String {
 
     return result.toString()
 }
+
+fun String?.escapeJsNull(): String? {
+    if (isNullOrBlank()) {
+        return this
+    }
+
+    if (equals("undefined", true) || equals("null", true)) {
+        return null
+    }
+
+    return this
+}

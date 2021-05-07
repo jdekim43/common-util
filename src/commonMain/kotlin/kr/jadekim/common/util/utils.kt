@@ -121,4 +121,7 @@ fun parseArgument(vararg args: String): Map<String, List<String>> {
 
 expect fun generateUUID(): String
 
+@Deprecated("Use currentTimeMillis()", ReplaceWith("kr.jadekim.common.util.currentTimeMillis()"))
 expect val currentTimeMillis: Long
+
+expect fun currentTimeMillis(): Long
