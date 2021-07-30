@@ -101,3 +101,21 @@ fun <K, V> Iterable<K>.withValue(
         }
     }
 }
+
+fun <K, V> Iterable<K>.withValue(
+    values: Map<K, V>,
+    defaultValue: (K) -> V
+): Iterable<V> = object : Iterable<V> {
+
+    override fun iterator(): Iterator<V> = object : Iterator<V> {
+
+        private val iterator = this@withValue.iterator()
+
+        override fun hasNext(): Boolean = iterator.hasNext()
+
+        override fun next(): V {
+            val key = iterator.next()
+            return values[key] ?: defaultValue(key)
+        }
+    }
+}
