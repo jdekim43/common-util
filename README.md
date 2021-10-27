@@ -1,4 +1,6 @@
 # common-util
+Moved to https://github.com/jdekim43/kotlin-common
+
 개발할 때 자주 사용하는 함수 라이브러리
 * 암호화
     * AES
